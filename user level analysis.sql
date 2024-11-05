@@ -55,7 +55,21 @@ count( distinct case when is_repeat_session=0 then website_session_id end) as ne
 count(distinct case when is_repeat_session=1 then website_session_id end) as repeat_sessions
 from website_sessions
 group by 1;
-
+-- refund rates trends
+SELECT
+YEAR(oi.created_at) AS yr,
+MONTH(oi.created_at) AS mo,
+count(distinct case when oi.product_id=1 then r.order_item_id end ) as p1_refunds,
+count(distinct case when oi.product_id=1 then r.order_item_id end )/count(distinct case when oi.product_id=1 then oi.order_item_id end ) as p1_refu_rate,
+count(distinct case when oi.product_id=2 then r.order_item_id end ) as p2_refunds,
+count(distinct case when oi.product_id=2 then r.order_item_id end )/count(distinct case when oi.product_id=2 then oi.order_item_id end ) as p2_refu_rate,
+count(distinct case when oi.product_id=3 then r.order_item_id end ) as p3_refunds,
+count(distinct case when oi.product_id=3 then r.order_item_id end )/count(distinct case when oi.product_id=3 then oi.order_item_id end ) as p3_refu_rate
+from order_items oi
+left join order_item_refunds r
+on oi.order_item_id=r.order_item_id
+where oi.created_at<'14-10-15'
+group by 1,2;
 
 
 

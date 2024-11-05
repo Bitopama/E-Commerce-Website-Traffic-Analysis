@@ -1,3 +1,14 @@
+-- cross selling products for each product type
+select o.primary_product_id,
+count( distinct oi.order_item_id) as order_counts,
+count(distinct case when oi.product_id=1 then oi.order_item_id end) as cross_sell_prod_1,
+count(distinct case when oi.product_id=2 then oi.order_item_id end) as cross_sell_prod_2,
+count(distinct case when oi.product_id=3 then oi.order_item_id end) as cross_sell_prod_3
+from orders o
+left join order_items oi
+on o.order_id=oi.order_id 
+where   o.order_id between 10000 and 11000
+group by 1;
 -- cross sell product analysis and click through rates from cart page
 -- fetching the data
 create temporary table sessions_seeing_cart
@@ -15,27 +26,36 @@ select * from sessions_seeing_cart;
 create temporary table cart_sessions_seeing_another_page
 select ssc.time_period,
 ssc.cart_session_id,
-min(wp.website_pageview_id)
+min(wp.website_pageview_id) as pv_id_after_cart
 from sessions_seeing_cart ssc
 left join website_pageviews wp
 on ssc.cart_session_id =wp.website_session_id
 and ssc.cart_pageview_id<wp.website_pageview_id
-group by 1,2
-having min(wp.website_pageview_id) is not null;
+group by 1,2;
+-- having min(wp.website_pageview_id) is not null;
 select * from cart_sessions_seeing_another_page;
+drop temporary table cart_sessions_seeing_another_page;
 -- cart sessions with orders
 create temporary table cart_sessions_with_orders
-select ssc.time_period,ssc.cart_session_id,o.order_id,o.items_purchased,o.price_usd
+select time_period,cart_session_id,order_id,items_purchased,price_usd
 from sessions_seeing_cart ssc
-join orders o
+left join orders o
 on ssc.cart_session_id=o.website_session_id;
-select ssc.time_period,ssc.cart_session_id,
-case when cssap.cart_session_id is not null then 1 else 0 end as sess_clc_next,
-case when cswo.cart_session_id is not null then 1 else 0 end as sess_ordered,
-cswo.items_purchased ,cswo.order_id,cswo.price_usd
-from sessions_seeing_cart ssc
-left join cart_sessions_seeing_another_page cssap
-on ssc.cart_session_id=cssap.cart_session_id
-left join cart_sessions_with_orders cswo
-on ssc.cart_session_id=cssap.cart_session_id
-order by ssc.cart_session_id;
+select * from cart_sessions_with_orders;
+drop temporary table cart_sessions_with_orders;
+--
+-- after launching a new product birthday sugar panda which was lanched after introducing the multi cart option lets analyse how it affects revenue
+-- 3 months before and after launching it
+select
+case when ws.created_at<'2013-12-12' then 'pre_birthday_sugar_panda'
+when ws.created_at>='2013-12-12' then 'post_birthday_sugar_panda' end as time_period,
+count(distinct o.order_id)/count(distinct ws.website_session_id) as conv_rate,
+sum(o.price_usd)/count(distinct o.order_id) as aov,
+sum(o.items_purchased)/count(distinct o.order_id) as products_per_order,
+sum(o.price_usd)/count(distinct ws.website_session_id) as rev_per_sess
+from website_sessions ws
+left join orders o
+on ws.website_session_id=o.website_session_id
+where ws.created_at between '2013-12-09' and '2014-12-03'
+group by 1
+;
