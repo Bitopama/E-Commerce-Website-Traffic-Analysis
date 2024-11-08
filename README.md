@@ -25,23 +25,28 @@ This project involves analyzing various aspects of an e-commerce website’s tra
 ## 🔍 **Description**
 
 1. **Traffic Source & Conversion Rates**  
+   Code: [Traffic Source & Conversion Rates](https://github.com/Bitopama/E-Commerce-Website-Traffic-Analysis/blob/main/analysing%20business%20trends.sql)
    - Analyzed weekly session trends with Google search as the top traffic source.
    - Identified "non-brand" as the primary campaign and segmented conversion rates by device type for paid channels.
 
 2. **Pageview & Funnel Metrics**  
-   - Calculated bounce rates per landing page and performed funnel analysis.
+    Code: [Pageview & Funnel Metrics](https://github.com/Bitopama/E-Commerce-Website-Traffic-Analysis/blob/main/bounce%20and%20funnel_analysis.sql)
+    - Calculated bounce rates per landing page and performed funnel analysis.
    - Found that 60% of user drop-offs occur from the billing page to order confirmation.
 
 3. **Product Launch Impact**  
-   - Compared funnel performance and revenue metrics before and after product launches.
+    Code: [Product Launch Impact](https://github.com/Bitopama/E-Commerce-Website-Traffic-Analysis/blob/main/product%20launch%20analysis.sql)
+    - Compared funnel performance and revenue metrics before and after product launches.
    - Observed a 5% increase in per-session and per-order margins within three months following the product release.
 
 4. **Cross-Sell Evaluation**  
+   Code: [Cross-Sell Evaluation](https://github.com/Bitopama/E-Commerce-Website-Traffic-Analysis/blob/main/cross%20product%20analysis.sql)
    - Tracked order ratios and cross-product purchases, evaluating the impact of the multiple add-to-cart feature.
    - Resulted in a 7.7% increase in order volume and an 8.75% rise in total revenue.
 
-5. **Refund & User Analysis**  
-   - Analyzed monthly refund patterns to assess product quality.
+8. **Refund & User Analysis**  
+    Code: [Refund & User Analysis](https://github.com/Bitopama/E-Commerce-Website-Traffic-Analysis/blob/main/user%20level%20analysis.sql)
+    - Analyzed monthly refund patterns to assess product quality.
    - Tracked user return channels, finding that repeat visits were mostly through direct access and organic search, which indicates strong brand recognition and engagement.
 
 ---
@@ -59,7 +64,7 @@ This project involves analyzing various aspects of an e-commerce website’s tra
 ## 🛠 **Technologies Used**
 
 - **MySQL**: For querying and data analysis.
-- 
+  
 ---
 
 ## 📊 **Results Summary**
